@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GitHub Compare URL Maker</title>
+    <style>
+input {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+    </style>
+  </head>
+  <body>
+    <h1>GitHub Compare URL Maker</h1>
+    <p>
+    <strong>Usage: </strong>Put 2 commit URLs and click the button
+    </p>
+    <table>
+      <tr>
+        <td>From</td>
+        <td><input type="text" id="from-text" size="90"></td>
+      </tr>
+      <tr>
+        <td>To</td>
+        <td><input type="text" id="to-text" size="90"></td>
+      </tr>
+    </table>
+    <input type="button" onclick="updateCompareUrl();" value="Make URL"><br>
+    Compare URL : <a id="compare-link" href="javascipt:void(0);" target="_blank"></a>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+function updateCompareUrl() {
+  var from = $('#from-text').val();
+  var fromArr = from.split('/');
+  var to = $('#to-text').val();
+  var toArr = to.split('/');
+  var userName = fromArr[3];
+  var repoName = fromArr[4];
+  var url = fromArr[0] + '//github.com/' + userName + '/' + repoName + '/compare/'
+      + fromArr[fromArr.length - 1] + '...' + toArr[toArr.length - 1];
+  $('#compare-link').attr('href', url);
+  $('#compare-link').text(url);
+}
+
+$(function(){
+});
+    </script>
+  </body>
+</html>

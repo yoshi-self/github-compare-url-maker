@@ -24,18 +24,35 @@ input {
         <td><input type="text" id="to-text" size="90"></td>
       </tr>
     </table>
+    <!--
+    Repo: <input type="text" id="user-name-text" size="15"> / <input type="text" id="repo-name-text" size="15"><span style="color:blue"> (Fill these only when neither of above include URL)</span><br>
+    -->
     <input type="button" onclick="updateCompareUrl();" value="Make URL"><br>
     Compare URL : <a id="compare-link" href="javascipt:void(0);" target="_blank"></a>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
 function updateCompareUrl() {
+  // TODO: support name like 'feature/some_branch'
   var from = $('#from-text').val();
   var fromArr = from.split('/');
   var to = $('#to-text').val();
   var toArr = to.split('/');
-  var userName = fromArr[3];
-  var repoName = fromArr[4];
-  var url = fromArr[0] + '//github.com/' + userName + '/' + repoName + '/compare/'
+  if(from.startsWith("http")) {
+    var scheme = fromArr[0];
+    var userName = fromArr[3];
+    var repoName = fromArr[4];
+  }
+  else if(to.startsWith("http")) {
+    var scheme = toArr[0];
+    var userName = toArr[3];
+    var repoName = toArr[4];
+  }
+  else {
+    // TODO
+  }
+  //var userName = fromArr[3];
+  //var repoName = fromArr[4];
+  var url = scheme + '//github.com/' + userName + '/' + repoName + '/compare/'
       + fromArr[fromArr.length - 1] + '...' + toArr[toArr.length - 1];
   $('#compare-link').attr('href', url);
   $('#compare-link').text(url);

@@ -10,10 +10,12 @@ input {
     </style>
   </head>
   <body>
+    <a href="javascript:void(0)" onclick="updateTranslation('en')">En</a>&nbsp;|&nbsp;
+    <a href="javascript:void(0)" onclick="updateTranslation('ja')">Ja</a>
     <h1>GitHub Compare URL Maker</h1>
     <p>
-    <strong>Usage: </strong>
-    <div>
+    <strong data-translatable="usage_title">Usage: </strong>
+    <div data-translatable="usage_content">
       Put 2 commit URLs and click the button<br>
       You can also put branch names or tag names<br>
     </div>
@@ -28,9 +30,9 @@ input {
         <td><input type="text" id="to-text" size="90"></td>
       </tr>
     </table>
-    Repo: <input type="text" id="user-name-text" size="15"> / <input type="text" id="repo-name-text" size="15"><span style="color:#888"> (Fill these only when neither of above include URL)</span><br>
+    Repo: <input type="text" id="user-name-text" size="15"> / <input type="text" id="repo-name-text" size="15"><span style="color:#888" data-translatable="reponame_note"> (Fill these only when neither of above include URL)</span><br>
     <input type="button" onclick="updateCompareUrl();" value="Make URL"><br>
-    Compare URL : <a id="compare-link" href="javascript:void(0)" target="_self">(will show up here)</a><br>
+    Compare URL : <a id="compare-link" href="javascript:void(0)" target="_self" data-translatable="compare_url_placeholder">(will show up here)</a><br>
     <br>
     <br>
     GitHub repo: <a href="https://github.com/yoshi-self/github-compare-url-maker" target="_blank">yoshi-self/github-compare-url-maker</a>
@@ -73,8 +75,28 @@ function updateCompareUrl() {
   $('#compare-link').text(url);
 }
 
-$(function(){
-});
+var translations = {
+  en: {
+    usage_title: 'Usage: ',
+    usage_content: 'Put 2 commit URLs and click the button<br> You can also put branch names or tag names<br>',
+    reponame_note: '(Fill these only when neither of above include URL)',
+    compare_url_placeholder: '(will show up here)'
+  },
+  ja: {
+    usage_title: '使い方: ',
+    usage_content: '比べたい2つのコミットURL、もしくはブランチ名・タグ名を入力しボタンを押してください',
+    reponame_note: '（上の2つがURLを含んでいないときのみ指定してください）',
+    compare_url_placeholder: '（ここに表示されます）'
+  }
+};
+
+function updateTranslation(lang) {
+  $('[data-translatable]').each(function(index, elm) {
+    var textName = $(elm).attr('data-translatable')
+    $(elm).html(translations[lang][textName]);
+  });
+  return false;
+}
     </script>
   </body>
 </html>

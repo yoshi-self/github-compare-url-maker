@@ -30,7 +30,7 @@ input {
         <td><input type="text" id="to-text" size="90"></td>
       </tr>
     </table>
-    Repo: <input type="text" id="user-name-text" size="15"> / <input type="text" id="repo-name-text" size="15"><span style="color:#888" data-translatable="reponame_note"> (Fill these only when neither of above include URL)</span><br>
+    Repo: <input type="text" id="repo-name-text" size="30" placeholder="username/reponame"><span style="color:#888" data-translatable="reponame_note"> (Fill these only when neither of above include URL)</span><br>
     <input type="button" onclick="updateCompareUrl();" value="Make URL"><br>
     Compare URL : <a id="compare-link" href="javascript:void(0)" target="_self" data-translatable="compare_url_placeholder">(will show up here)</a><br>
     <br>
@@ -60,9 +60,8 @@ function updateCompareUrl() {
   else {
     // TODO
     var scheme = "https:"
-    var userName = $("#user-name-text").val();
     var repoName = $("#repo-name-text").val();
-    baseUrl += scheme + '//github.com/' + userName + '/' + repoName + '/compare/'
+    baseUrl += scheme + '//github.com/' + repoName + '/compare/'
   }
   // TODO: check baseUrl correct
   var url = baseUrl + fromArr[fromArr.length - 1] + '...' + toArr[toArr.length - 1];

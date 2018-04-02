@@ -39,36 +39,56 @@ input {
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
 function updateCompareUrl() {
-  // TODO: support name like 'feature/some_branch'
   var from = $('#from-text').val();
   var fromArr = from.split('/');
+  var fromCommit = '';
   var to = $('#to-text').val();
   var toArr = to.split('/');
-  var baseUrl = "";
+  var toCommit = '';
+  var baseUrl = '';
   if(from.startsWith("http")) {
     var scheme = fromArr[0];
     var userName = fromArr[3];
     var repoName = fromArr[4];
-    baseUrl = scheme + '//github.com/' + userName + '/' + repoName + '/compare/'
-  }
-  else if(to.startsWith("http")) {
-    var scheme = toArr[0];
-    var userName = toArr[3];
-    var repoName = toArr[4];
-    baseUrl += scheme + '//github.com/' + userName + '/' + repoName + '/compare/'
+    baseUrl = scheme + '//github.com/' + userName + '/' + repoName + '/compare/';
+    fromCommit = fromArr[fromArr.length - 1];
   }
   else {
-    // TODO
+    // assume branch name or tag name specified
+    fromCommit = $('#from-text').val();
+  }
+
+  if(to.startsWith("http")) {
+    if(baseUrl == '') {
+      var scheme = toArr[0];
+      var userName = toArr[3];
+      var repoName = toArr[4];
+      baseUrl += scheme + '//github.com/' + userName + '/' + repoName + '/compare/';
+    }
+    toCommit = toArr[toArr.length - 1];
+  }
+  else {
+    // assume branch name or tag name specified
+    toCommit = $('#to-text').val();
+  }
+
+  if(baseUrl == '') {
     var scheme = "https:"
     var repoName = $("#repo-name-text").val();
-    baseUrl += scheme + '//github.com/' + repoName + '/compare/'
+    if(repoName == '') {
+      alert('Please specify repo when neither of commits include URL');
+      return;
+    }
+    baseUrl += scheme + '//github.com/' + repoName + '/compare/';
   }
-  // TODO: check baseUrl correct
-  var url = baseUrl + fromArr[fromArr.length - 1] + '...' + toArr[toArr.length - 1];
-  /*
-  var url = scheme + '//github.com/' + userName + '/' + repoName + '/compare/'
-      + fromArr[fromArr.length - 1] + '...' + toArr[toArr.length - 1];
-      */
+
+  if(baseUrl == '' || fromCommit == '' || toCommit == '') {
+    alert('Not enough input to make compare URL');
+    return;
+  }
+
+  var url = baseUrl + fromCommit + '...' + toCommit;
+
   $('#compare-link').attr('href', url);
   $('#compare-link').attr('target', '_blank');
   $('#compare-link').text(url);
